@@ -1,6 +1,9 @@
 package main
 
-import "math/rand"
+import (
+	"math/rand"
+	"time"
+)
 
 type Boid struct {
 	position Vector2D
@@ -9,7 +12,9 @@ type Boid struct {
 }
 
 func (b *Boid) moveOne() {
+	boidMap[int(b.position.x)][int(b.position.y)] = -1
 	b.position = b.position.Add(b.velocity)
+	boidMap[int(b.position.x)][int(b.position.y)] = b.id
 	next := b.position.Add(b.velocity)
 	if next.x >= screenWidth || next.x < 0 {
 		b.velocity = Vector2D{x: -b.velocity.x, y: b.velocity.y}
@@ -30,10 +35,11 @@ func (b *Boid) start() {
 
 func createBoid(bid int) {
 	b := Boid{
-		position: Vector2D{x: rand.Float64() * screenWidth, y: rand.float64() * screenHeight},
+		position: Vector2D{x: rand.Float64() * screenWidth, y: rand.Float64() * screenHeight},
 		velocity: Vector2D{x: (rand.Float64() * 2) - 1.0, y: (rand.Float64() * 2) - 1.0},
-		id: bid
+		id: bid,
 	}
 	boids[bid] = &b
+	boidMap[int(b.position.x)][int(b.position.y)] = b.id
 	go b.start()
 }

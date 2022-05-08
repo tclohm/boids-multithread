@@ -5,17 +5,19 @@ import (
 	"image/color"
 	"log"
 	"fmt"
-	"github.com/tclohm/multithread"
 )
 
 const (
-	screenWidth, screeHeight = 640, 360
+	screenWidth, screenHeight = 640, 360
 	boidCount = 500
+	viewRadius = 13
+	adjRate = 0.015
 )
 
 var (
 	green = color.RGBA{R: 10, G: 255, B: 50, A: 255}
 	boids [boidCount]*Boid
+	boidMap [screenWidth + 1][screenHeight + 1]int
 )
 
 type Game struct{}
@@ -35,15 +37,21 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(_, _ int) (w, h int) {
-	return screenWidth, screeHeight
+	return screenWidth, screenHeight
 }
 
 func main() {
 	fmt.Println("starting up...")
+
+	for i, row := range boidMap {
+		for j := range row {
+			boidMap[i][j] = -1
+		}
+	}
 	for i := 0 ; i < boidCount ; i++ {
 		createBoid(i)
 	}
-	ebiten.SetWindowSize(screenWidth*2, screeHeight*2)
+	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
 	ebiten.SetWindowTitle("Boids in a box")
 	if err := ebiten.RunGame(&Game{}); err != nil {
 		log.Fatal(err)

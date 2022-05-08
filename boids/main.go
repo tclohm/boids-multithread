@@ -4,6 +4,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"image/color"
 	"log"
+	"fmt"
+	"github.com/tclohm/multithread"
 )
 
 const (
@@ -32,11 +34,12 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 }
 
-func (g *Game) Layout(_, _ int) (w, h, int) {
+func (g *Game) Layout(_, _ int) (w, h int) {
 	return screenWidth, screeHeight
 }
 
 func main() {
+	fmt.Println("starting up...")
 	for i := 0 ; i < boidCount ; i++ {
 		createBoid(i)
 	}
@@ -45,4 +48,5 @@ func main() {
 	if err := ebiten.RunGame(&Game{}); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("ebiten initialized and running")
 }

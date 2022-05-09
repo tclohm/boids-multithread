@@ -15,8 +15,10 @@ const (
 	adjRate = 0.015
 )
 
+// rgba(79, 230, 219, 0.8)
+
 var (
-	green = color.RGBA{R: 10, G: 255, B: 50, A: 255}
+	green = color.RGBA{R: 79, G: 230, B: 219, A: 255}
 	boids [boidCount]*Boid
 	boidMap [screenWidth + 1][screenHeight + 1]int
 	rWLock = sync.RWMutex{}

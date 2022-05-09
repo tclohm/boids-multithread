@@ -5,6 +5,7 @@ import (
 	"image/color"
 	"log"
 	"fmt"
+	"sync"
 )
 
 const (
@@ -18,6 +19,7 @@ var (
 	green = color.RGBA{R: 10, G: 255, B: 50, A: 255}
 	boids [boidCount]*Boid
 	boidMap [screenWidth + 1][screenHeight + 1]int
+	rWLock = sync.RWMutex{}
 )
 
 type Game struct{}
@@ -42,12 +44,13 @@ func (g *Game) Layout(_, _ int) (w, h int) {
 
 func main() {
 	fmt.Println("starting up...")
-
+	fmt.Println("generating 2D Matrix with Map")
 	for i, row := range boidMap {
 		for j := range row {
 			boidMap[i][j] = -1
 		}
 	}
+	fmt.Println("✅ 2D Matrix Created")
 	for i := 0 ; i < boidCount ; i++ {
 		createBoid(i)
 	}

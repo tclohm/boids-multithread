@@ -19,8 +19,6 @@ const (
 
 var (
 	green = color.RGBA{R: 79, G: 230, B: 219, A: 255}
-	red = color.RGBA{R: 255, G: 10, B: 50, A: 255}
-	blue = color.RGBA{R: 10, G: 50, B: 255, A: 255}
 	boids [boidCount]*Boid
 	boidMap [screenWidth + 1][screenHeight + 1]int
 	rWLock = sync.RWMutex{}

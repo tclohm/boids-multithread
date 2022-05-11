@@ -50,24 +50,42 @@ func main() {
 var (
 	matrixA = [matrixSize][matrixSize]int{}
 	matrixB = [matrixSize][matrixSize]int{}
+	result = [matrixSize][matrixSize]int{}
+	lck = sync.RWMutex{}
+	cond = sync.NewCond(lck.RLocker())
+	wg := sync.WaitGroup()
 )
 
 func generateRandom(matrix *[matrixSize][matrixSize]int) {
-	for row := 0 ; row < matrixSize ; row++ {
-		for col := 0 ; col < matrixSize ; col++ {
-			matrix[row][col] += rand.Intn(10) - 5
+	lck.RLock()
+	for {
+		wg.Done()
+		cond.Wait()
+		for row := 0 ; row < matrixSize ; row++ {
+			for col := 0 ; col < matrixSize ; col++ {
+				matrix[row][col] += rand.Intn(10) - 5
+			}
 		}
 	}
+	
 }
 
 func workoutmatrix(row int) {
-	generateRandom(&matrixA)
-	generateRandom(&matrixB)
-	for col := 0 ; col < matrixSize ; col++ {
-		for i := i < matrixSize ; i++ {
-			result[row][col] += matrixA[row][i] * matrixB[i][col]
-		}
+	wg.Add(matrixSize)
+	for row := 0 ; row < matrixSize ; row++ {
+		// thread
+		go workoutmatrix(row)
 	}
+
+	for i := 0 ; i < 100 ; i++ {
+		wg.Wait()
+		lck.Lock()
+		generateRandom(&matrixA)
+		generateRandom(&matrixB)
+		wg.Add(matrixSize)
+	}
+	lck.Unlock()
+	cond.Broadcast()
 }
 
 func runit() {

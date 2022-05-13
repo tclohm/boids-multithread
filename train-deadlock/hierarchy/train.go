@@ -1,4 +1,4 @@
-package main
+package hierarchy
 
 import (
 	. "github.com/tclohm/multithreading-go/train-deadlock/common"

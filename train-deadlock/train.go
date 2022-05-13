@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/tclohm/boids/deadlocks/common"
+	"github.com/tclohm/multithreading-go/train-deadlock/common"
 )
 
 func MoveTrain(train *Train, distance int, crossings []*Crossing) {

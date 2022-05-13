@@ -133,3 +133,37 @@ The main thread creates 5 threads and waits for them to complete
 Each thread adds 100 to the counter
 However threads might overwrite each other, since access to x is not
 exclusive
+
+##### Conditional
+thread calls wait() on a conditional variable it will unlock the mutex 
+associated with that condition variable
+
+a condition variable provides a signal() function
+only one thread is unblocked. Upon unblocking the thread will try 
+to reacquire the lock associated with the conditional variable
+
+go`
+    func runChildThread() {
+       mlock.Lock()
+       fmt.Println("RunChildThread, lock acquired")
+       cond.Signal()
+       fmt.Println("RunChildThread, Waiting")
+       cond.Wait()
+       fmt.Println("RunChildThread, Running")
+    }
+    func RunMainThread() {
+       mlock.Lock()
+       fmt.Println("RunMainThread, lock acquired")
+       go runChildThread()
+       fmt.Println("RunMainThread, Waiting")
+       cond.Wait()
+       fmt.Println("RunMainThread, Running")
+       cond.Signal()
+       time.Sleep(10 * time.Second)
+    }
+`
+executes: RunMainThread, lock acquired
+RunMainThread, Waiting
+RunChildThread, lock acquired
+RunChildThread, Waiting
+RunMainThread, Running

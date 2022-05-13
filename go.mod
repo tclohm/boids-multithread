@@ -1,4 +1,4 @@
-module github.com/tclohm/boids
+module github.com/tclohm/multithreading-go
 
 go 1.18
 

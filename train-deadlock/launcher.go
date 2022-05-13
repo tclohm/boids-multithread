@@ -22,7 +22,7 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 		DrawTracks(screen)
-		DrawIntersection(screen)
+		DrawIntersections(screen)
 		DrawTrains(screen)
 }
 
@@ -54,7 +54,7 @@ func main() {
 		{Position: 175, Intersection: intersections[3]},
 	})
 
-	go MoveTrain(trains[2], 300, []*Crossing{
+	go MoveTrain(trains[3], 300, []*Crossing{
 		{Position: 125, Intersection: intersections[3]},
 		{Position: 175, Intersection: intersections[0]},
 	})
